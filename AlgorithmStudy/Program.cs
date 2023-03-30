@@ -25,7 +25,21 @@ namespace AlgorithmStudy
             //Repeat string match 
             string[] a = { "leo", "john", "eden", "mike" };
             string[] b = { "leo", "john", "eden" };
-            CompletionMarathon(a, b);
+            //CompletionMarathon(a, b);
+
+            // find num in array
+            string[] test = { "911", "9113412321", "381209" };
+            string[] test2 = { "123", "456", "789" };
+            string[] test3 = { "12", "123", "1235", "567", "88" };
+            bool flag = NumberExists(test3);
+            Console.WriteLine(flag);
+
+            //Find Every Prime num in string
+            string test4 = "17";
+            int primeNumsInStr = FindEveryPrimeNumInString(test4);
+
+            //   Console.WriteLine($"Total Prime nums : {primeNumsInStr}");
+        
 
             Console.ReadLine();
         }
@@ -57,6 +71,8 @@ namespace AlgorithmStudy
             }
 
         }
+
+
         public static void KthLargestElement(int[] arr, int kth)
         {
             //1.sort the array largest to smallest
@@ -106,11 +122,11 @@ namespace AlgorithmStudy
         /// <param name="complete">people who complete the marathon </param>
         public static void CompletionMarathon(string[] participant, string[] complete)
         {
-           
+
             // using dictionry and add them into dic for participant and complete
             Dictionary<string, int> dic = new Dictionary<string, int>();
 
-            for(int i =0; i<participant.Length; i++)
+            for (int i = 0; i < participant.Length; i++)
             {
                 if (!dic.ContainsKey(participant[i]))
                     dic.Add(participant[i], 1);
@@ -127,19 +143,139 @@ namespace AlgorithmStudy
 
             }
 
-            foreach(var v in dic)
+            foreach (var v in dic)
             {
                 //since both string[] elements are added into dictionary whoever complete the marathon will have value 2
                 //thefore filtered 
                 if (v.Value <= 1)
                 {
 
-                Console.WriteLine($"{v.Key } : {v.Value}");
+                    Console.WriteLine($"{v.Key } : {v.Value}");
                 }
             }
 
         }
 
+
+        public static bool NumberExists(string[] arr)
+        {
+            //copy the arr for in case any error occurs
+            string[] copyArr = arr;
+            //first num in arr
+            string test = copyArr[0];
+            //last num in arr
+            string lastNum = copyArr[copyArr.Length - 1];
+            for (int i = 0; i < copyArr.Length - 1; i++)
+            {
+
+                if (copyArr[i + 1].Contains(test) || lastNum.Contains(test))
+                    return false;
+            }
+            return true;
+        }
+        public static int FindEveryPrimeNumInString(string s)
+        {
+
+            if (s.Length < 1)
+                return 0;
+
+
+
+            int num = Convert.ToInt32(s);
+
+            var dic = new Dictionary<int, int>();
+            int value = 0;
+            while (num > 0)
+            {
+                if (!dic.ContainsKey(num))
+                    dic.Add(num, 1);
+                else
+                    dic[num]++;
+
+                value = num % 10;
+                if (!dic.ContainsKey(value))
+                    dic.Add(value, 1);
+                else
+                    dic[value]++;
+
+                num /= 10;
+
+
+            }
+            //reverse 
+            int reverse = ReverseStr(s);
+            int reverseValue = 0;
+
+            while (reverse > 0)
+            {
+                if (!dic.ContainsKey(reverse))
+                    dic.Add(reverse, 1);
+                else
+                    dic[reverse]++;
+
+                reverseValue = reverse % 10;
+                if (!dic.ContainsKey(reverseValue))
+                    dic.Add(reverseValue, 1);
+                else
+                    dic[reverseValue]++;
+
+                reverse /= 10;
+
+
+            }
+            int count = 0;
+            foreach (var d in dic)
+            {
+                if (IsPrime(d.Key))
+                {
+                    Console.WriteLine($"{ d.Key}");
+                    count++;
+                }
+
+            }
+
+
+            //17
+            return count;
+
+
+        }
+        /// <summary>
+        /// reverse string and return int value
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static int ReverseStr(string s)
+        {
+            string reversed = "";
+            for (int i = s.Length - 1; i >= 0; i--)
+            {
+                reversed += s[i];
+
+            }
+            return Convert.ToInt32(reversed);
+
+        }
+        public static bool IsPrime(int val)
+        {
+            if (val <= 2)
+                return false;
+            for (int i = 2; i < Math.Sqrt(val); i++)
+            {
+                //1234567891011
+                if (val % i == 0)
+                    return false;
+            }
+            return true;
+        }
+
+   
+
+
+      
     }
 
-}
+
+    }
+
+
